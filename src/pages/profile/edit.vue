@@ -267,10 +267,7 @@ const handleSubmit = async () => {
         userStore.setUser(updatedUser)
       }
 
-      // 返回上一页
-      setTimeout(() => {
-        router.back()
-      }, 1500)
+      goBack()
     } else {
       modal?.showToast({
         type: 'error',
