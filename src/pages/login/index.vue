@@ -56,10 +56,12 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
-import Header from '../components/useHeader.vue'
-import apiClient from '../api/index'
+import { useI18n } from 'vue-i18n'
+import Header from '@/components/useHeader.vue'
+import apiClient from '@/api/index'
 
 const router = useRouter()
+const { t } = useI18n()
 
 // 注入全局Modal方法
 const modal = inject('modal') as {
@@ -82,7 +84,7 @@ const isLoading = ref(false)
 const showError = (message: string, type: string = 'error') => {
   modal?.showToast({
     type,
-    title: type === 'error' ? '错误' : type === 'warning' ? '警告' : '提示',
+    title: type === 'error' ? t('modal.error') : type === 'warning' ? t('modal.warning') : t('modal.info'),
     message,
     duration: 5000
   })
@@ -92,12 +94,12 @@ const showError = (message: string, type: string = 'error') => {
 const handleLogin = async () => {
   // 表单验证
   if (!form.value.userId.trim()) {
-    showError('请输入用户ID', 'warning')
+    showError(t('login.validation.userIdRequired'), 'warning')
     return
   }
 
   if (!form.value.password.trim()) {
-    showError('请输入密码', 'warning')
+    showError(t('login.validation.passwordRequired'), 'warning')
     return
   }
 
@@ -113,17 +115,17 @@ const handleLogin = async () => {
       // 登录成功，显示成功消息并跳转到首页
       modal?.showToast({
         type: 'success',
-        title: '登录成功',
-        message: '正在跳转到首页...'
+        title: t('modal.success'),
+        message: t('login.successMessage')
       })
 
       router.replace('/')
     } else {
-      showError(response.message || '登录失败，请检查用户名和密码')
+      showError(response.message || t('login.validation.loginFailed'))
     }
   } catch (error) {
     console.error('登录错误:', error)
-    showError('网络错误，请稍后重试')
+    showError(t('login.validation.networkError'))
   } finally {
     isLoading.value = false
   }

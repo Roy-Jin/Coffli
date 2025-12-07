@@ -175,6 +175,15 @@ class APIClient {
     return this.post("/user/avatar", { avatar: avatarData });
   }
 
+  // 更新用户信息
+  async updateUserInfo(userData: {
+    nickname?: string;
+    gender?: number;
+    info?: any;
+  }): Promise<ApiResponse> {
+    return this.post("/user/update", userData);
+  }
+
   // ========== 博客管理接口 ==========
 
   // 获取博客

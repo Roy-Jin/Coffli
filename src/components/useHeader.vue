@@ -65,11 +65,10 @@
 import { ref, computed, onMounted, onUnmounted, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useLanguageStore } from '../stores/language'
-import { useUserStore } from '../stores/user'
-import { setI18nLanguage } from '../i18n'
-import apiClient from '../api/index'
-import defaultAvatar from '../assets/icon.png'
+import { useLanguageStore } from '@/stores/language'
+import { useUserStore } from '@/stores/user'
+import { setI18nLanguage } from '@/i18n'
+import defaultAvatar from '@/assets/icon.png'
 
 const router = useRouter()
 const { t, availableLocales } = useI18n()

@@ -39,7 +39,14 @@
     "forgotPassword": "Forgot password?",
     "loginButton": "Login",
     "noAccount": "Don't have an account?",
-    "registerLink": "Register now"
+    "registerLink": "Register now",
+    "successMessage": "Redirecting to home page...",
+    "validation": {
+      "userIdRequired": "Please enter user ID",
+      "passwordRequired": "Please enter password",
+      "loginFailed": "Login failed, please check username and password",
+      "networkError": "Network error, please try again later"
+    }
   },
   "register": {
     "title": "Register",
@@ -52,37 +59,83 @@
     "confirmPasswordPlaceholder": "Please enter password again",
     "registerButton": "Register",
     "haveAccount": "Already have an account?",
-    "loginLink": "Login now"
+    "loginLink": "Login now",
+    "successMessage": "Redirecting to login page...",
+    "validation": {
+      "userIdRequired": "Please enter user ID",
+      "passwordRequired": "Please enter password",
+      "confirmPasswordRequired": "Please confirm password",
+      "passwordMismatch": "Password and confirm password do not match",
+      "userIdMinLength": "User ID must be at least 3 characters",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "registerFailed": "Registration failed, please try again later",
+      "networkError": "Network error, please try again later"
+    }
   },
   "language": {
     "zh": "中文",
     "en": "English",
     "switchLanguage": "Switch Language"
   },
-  "profile": {
-    "basicInfo": "Basic Information",
-    "role": "Role",
-    "gender": "Gender",
-    "status": "Status",
-    "active": "Active",
-    "inactive": "Inactive",
-    "registrationTime": "Registration Time",
-    "lastLogin": "Last Login",
-    "additionalInfo": "Additional Information",
-    "email": "Email",
-    "phone": "Phone",
-    "birthday": "Birthday",
-    "bio": "Bio",
-    "back": "Back",
-    "logout": "Logout",
-    "unknown": "Unknown",
-    "male": "Male",
-    "female": "Female"
-  },
+    "profile": {
+      "basicInfo": "Basic Information",
+      "role": "Role",
+      "gender": "Gender",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "registrationTime": "Registration Time",
+      "lastLogin": "Last Login",
+      "additionalInfo": "Additional Information",
+      "email": "Email",
+      "phone": "Phone",
+      "birthday": "Birthday",
+      "bio": "Bio",
+      "back": "Back",
+      "edit": "Edit Profile",
+      "logout": "Logout",
+      "unknown": "Unknown",
+      "male": "Male",
+      "female": "Female",
+      "logoutSuccess": "Redirecting to login page...",
+      "logoutFailed": "Logout failed, please try again later",
+      "networkError": "Network error, please try again later"
+    },
+    "editProfile": {
+      "title": "Edit Profile",
+      "basicInfo": "Basic Information",
+      "additionalInfo": "Additional Information",
+      "nickname": "Nickname",
+      "nicknamePlaceholder": "Please enter nickname",
+      "gender": "Gender",
+      "email": "Email",
+      "emailPlaceholder": "Please enter email address",
+      "phone": "Phone",
+      "phonePlaceholder": "Please enter phone number",
+      "birthday": "Birthday",
+      "bio": "Bio",
+      "bioPlaceholder": "Please enter bio",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving...",
+      "updateSuccess": "Profile updated successfully",
+      "updateFailed": "Update failed, please try again later",
+      "noChanges": "No changes detected",
+      "loginRequired": "Please login first",
+      "networkError": "Network error, please try again later"
+    },
   "confirmation": {
     "logoutTitle": "Confirm Logout",
     "logoutMessage": "Are you sure you want to logout?",
     "confirm": "Confirm",
     "cancel": "Cancel"
+  },
+  "modal": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "info": "Info",
+    "success": "Success",
+    "warning": "Warning",
+    "error": "Error"
   }
 }

@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import Header from '../components/useHeader.vue'
+import Header from '@/components/useHeader.vue'
 
 // 示例博客数据（使用国际化键值）
 const blogList = [

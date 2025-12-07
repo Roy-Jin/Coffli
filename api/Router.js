@@ -9,6 +9,7 @@ import _user_register from "./Routers/user/register.js";
 import _user_get from "./Routers/user/get.js";
 import _user_login from "./Routers/user/login.js";
 import _user_logout from "./Routers/user/logout.js";
+import _user_update from "./Routers/user/update.js";
 import _blog_get from "./Routers/blog/get.js";
 import _blog_create from "./Routers/blog/create.js";
 import _blog_delete from "./Routers/blog/delete.js";
@@ -24,6 +25,7 @@ const RoutersList = [
     { path: "/user/logout", handler: _user_logout },
     { path: "/user/get", handler: _user_get },
     { path: "/user/login", handler: _user_login },
+    { path: "/user/update", handler: _user_update },
     // blog router
     { path: "/blog/get", handler: _blog_get },
     { path: "/blog/create", handler: _blog_create },

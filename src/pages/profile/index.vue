@@ -73,6 +73,10 @@
               <i class="fas fa-arrow-left"></i>
               {{ $t('profile.back') }}
             </button>
+            <button class="edit-btn button" @click="handleEdit">
+              <i class="fas fa-edit"></i>
+              {{ $t('profile.edit') }}
+            </button>
             <button class="logout-btn button" @click="handleLogout">
               <i class="fas fa-sign-out-alt"></i>
               {{ $t('profile.logout') }}
@@ -88,10 +92,10 @@
 import { ref, computed, onMounted, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useUserStore } from '../stores/user'
-import apiClient from '../api/index'
-import Header from '../components/useHeader.vue'
-import defaultAvatar from '../assets/icon.png'
+import { useUserStore } from '@/stores/user'
+import apiClient from '@/api/index'
+import Header from '@/components/useHeader.vue'
+import defaultAvatar from '@/assets/icon.png'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -169,6 +173,11 @@ const goBack = () => {
   router.replace('/')
 }
 
+// 编辑用户信息
+const handleEdit = () => {
+  router.replace('/profile/edit')
+}
+
 // 获取用户信息
 const fetchUserInfo = async () => {
   if (!userStore.isLoggedIn || !userStore.getUserId) return
@@ -205,8 +214,8 @@ const handleLogout = async () => {
           // 显示成功消息
           modal?.showToast({
             type: 'success',
-            title: '退出成功',
-            message: '正在跳转到登录页面...'
+            title: t('modal.success'),
+            message: t('profile.logoutSuccess')
           })
 
           // 跳转到登录页面
@@ -214,8 +223,8 @@ const handleLogout = async () => {
         } else {
           modal?.showToast({
             type: 'error',
-            title: '退出失败',
-            message: response.message || '退出失败，请稍后重试',
+            title: t('modal.error'),
+            message: response.message || t('profile.logoutFailed'),
             duration: 5000
           })
         }
@@ -223,8 +232,8 @@ const handleLogout = async () => {
         console.error('退出登录错误:', error)
         modal?.showToast({
           type: 'error',
-          title: '网络错误',
-          message: '网络错误，请稍后重试',
+          title: t('modal.error'),
+          message: t('profile.networkError'),
           duration: 5000
         })
       } finally {
@@ -385,6 +394,16 @@ onMounted(() => {
   font-size: 1.1rem;
 }
 
+.edit-btn {
+  background: linear-gradient(135deg, var(--theme-color) 0%, var(--theme-hover) 100%);
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+}
+
+.edit-btn:hover {
+  box-shadow: 0 10px 25px var(--theme-hover);
+}
+
 .logout-btn {
   background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   padding: 1rem 2.5rem;
@@ -442,6 +461,7 @@ onMounted(() => {
   }
 
   .back-btn,
+  .edit-btn,
   .logout-btn {
     width: 100%;
   }

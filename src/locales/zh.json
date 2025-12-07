@@ -39,7 +39,14 @@
     "forgotPassword": "忘记密码？",
     "loginButton": "登录",
     "noAccount": "还没有账户？",
-    "registerLink": "立即注册"
+    "registerLink": "立即注册",
+    "successMessage": "正在跳转到首页...",
+    "validation": {
+      "userIdRequired": "请输入用户ID",
+      "passwordRequired": "请输入密码",
+      "loginFailed": "登录失败，请检查用户名和密码",
+      "networkError": "网络错误，请稍后重试"
+    }
   },
   "register": {
     "title": "注册",
@@ -52,37 +59,83 @@
     "confirmPasswordPlaceholder": "请再次输入密码",
     "registerButton": "注册",
     "haveAccount": "已有账户？",
-    "loginLink": "立即登录"
+    "loginLink": "立即登录",
+    "successMessage": "正在跳转到登录页面...",
+    "validation": {
+      "userIdRequired": "请输入用户ID",
+      "passwordRequired": "请输入密码",
+      "confirmPasswordRequired": "请确认密码",
+      "passwordMismatch": "密码和确认密码不匹配",
+      "userIdMinLength": "用户ID至少需要3个字符",
+      "passwordMinLength": "密码至少需要6个字符",
+      "registerFailed": "注册失败，请稍后重试",
+      "networkError": "网络错误，请稍后重试"
+    }
   },
   "language": {
     "zh": "中文",
     "en": "English",
     "switchLanguage": "切换语言"
   },
-  "profile": {
-    "basicInfo": "基本信息",
-    "role": "角色",
-    "gender": "性别",
-    "status": "状态",
-    "active": "活跃",
-    "inactive": "非活跃",
-    "registrationTime": "注册时间",
-    "lastLogin": "最后登录",
-    "additionalInfo": "额外信息",
-    "email": "邮箱",
-    "phone": "电话",
-    "birthday": "生日",
-    "bio": "个人简介",
-    "back": "返回",
-    "logout": "退出登录",
-    "unknown": "未知",
-    "male": "男",
-    "female": "女"
-  },
+    "profile": {
+      "basicInfo": "基本信息",
+      "role": "角色",
+      "gender": "性别",
+      "status": "状态",
+      "active": "活跃",
+      "inactive": "非活跃",
+      "registrationTime": "注册时间",
+      "lastLogin": "最后登录",
+      "additionalInfo": "额外信息",
+      "email": "邮箱",
+      "phone": "电话",
+      "birthday": "生日",
+      "bio": "个人简介",
+      "back": "返回",
+      "edit": "编辑资料",
+      "logout": "退出登录",
+      "unknown": "未知",
+      "male": "男",
+      "female": "女",
+      "logoutSuccess": "正在跳转到登录页面...",
+      "logoutFailed": "退出失败，请稍后重试",
+      "networkError": "网络错误，请稍后重试"
+    },
+    "editProfile": {
+      "title": "编辑个人资料",
+      "basicInfo": "基本信息",
+      "additionalInfo": "额外信息",
+      "nickname": "昵称",
+      "nicknamePlaceholder": "请输入昵称",
+      "gender": "性别",
+      "email": "邮箱",
+      "emailPlaceholder": "请输入邮箱地址",
+      "phone": "电话",
+      "phonePlaceholder": "请输入电话号码",
+      "birthday": "生日",
+      "bio": "个人简介",
+      "bioPlaceholder": "请输入个人简介",
+      "cancel": "取消",
+      "save": "保存",
+      "saving": "保存中...",
+      "updateSuccess": "个人信息更新成功",
+      "updateFailed": "更新失败，请稍后重试",
+      "noChanges": "没有检测到任何更改",
+      "loginRequired": "请先登录",
+      "networkError": "网络错误，请稍后重试"
+    },
   "confirmation": {
     "logoutTitle": "确认退出",
     "logoutMessage": "您确定要退出登录吗？",
     "confirm": "确定",
     "cancel": "取消"
+  },
+  "modal": {
+    "cancel": "取消",
+    "confirm": "确认",
+    "info": "信息",
+    "success": "成功",
+    "warning": "警告",
+    "error": "错误"
   }
 }

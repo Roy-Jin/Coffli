@@ -37,22 +37,29 @@ declare module 'vue-router/auto-routes' {
       { 404: ParamValue<false> },
       | never
     >,
-    '/login': RouteRecordInfo<
-      '/login',
+    '/login/': RouteRecordInfo<
+      '/login/',
       '/login',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/profile': RouteRecordInfo<
-      '/profile',
+    '/profile/': RouteRecordInfo<
+      '/profile/',
       '/profile',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/register': RouteRecordInfo<
-      '/register',
+    '/profile/edit': RouteRecordInfo<
+      '/profile/edit',
+      '/profile/edit',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/register/': RouteRecordInfo<
+      '/register/',
       '/register',
       Record<never, never>,
       Record<never, never>,
@@ -83,21 +90,27 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'src/pages/login.vue': {
+    'src/pages/login/index.vue': {
       routes:
-        | '/login'
+        | '/login/'
       views:
         | never
     }
-    'src/pages/profile.vue': {
+    'src/pages/profile/index.vue': {
       routes:
-        | '/profile'
+        | '/profile/'
       views:
         | never
     }
-    'src/pages/register.vue': {
+    'src/pages/profile/edit.vue': {
       routes:
-        | '/register'
+        | '/profile/edit'
+      views:
+        | never
+    }
+    'src/pages/register/index.vue': {
+      routes:
+        | '/register/'
       views:
         | never
     }

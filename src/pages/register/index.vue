@@ -65,10 +65,12 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
-import Header from '../components/useHeader.vue'
-import apiClient from '../api/index'
+import { useI18n } from 'vue-i18n'
+import Header from '@/components/useHeader.vue'
+import apiClient from '@/api/index'
 
 const router = useRouter()
+const { t } = useI18n()
 
 // 注入全局Modal方法
 const modal = inject('modal') as {
@@ -92,7 +94,7 @@ const isLoading = ref(false)
 const showError = (message: string, type: string = 'error') => {
   modal?.showToast({
     type,
-    title: type === 'error' ? '错误' : type === 'warning' ? '警告' : '提示',
+    title: type === 'error' ? t('modal.error') : type === 'warning' ? t('modal.warning') : t('modal.info'),
     message,
     duration: 5000
   })
@@ -102,32 +104,32 @@ const showError = (message: string, type: string = 'error') => {
 const handleRegister = async () => {
   // 表单验证
   if (!form.value.userId.trim()) {
-    showError('请输入用户ID', 'warning')
+    showError(t('register.validation.userIdRequired'), 'warning')
     return
   }
 
   if (!form.value.password.trim()) {
-    showError('请输入密码', 'warning')
+    showError(t('register.validation.passwordRequired'), 'warning')
     return
   }
 
   if (!form.value.confirmPassword.trim()) {
-    showError('请确认密码', 'warning')
+    showError(t('register.validation.confirmPasswordRequired'), 'warning')
     return
   }
 
   if (form.value.password !== form.value.confirmPassword) {
-    showError('密码和确认密码不匹配', 'error')
+    showError(t('register.validation.passwordMismatch'), 'error')
     return
   }
 
   if (form.value.userId.length < 3) {
-    showError('用户ID至少需要3个字符', 'warning')
+    showError(t('register.validation.userIdMinLength'), 'warning')
     return
   }
 
   if (form.value.password.length < 6) {
-    showError('密码至少需要6个字符', 'warning')
+    showError(t('register.validation.passwordMinLength'), 'warning')
     return
   }
 
@@ -143,8 +145,8 @@ const handleRegister = async () => {
       // 注册成功，显示成功消息并跳转到登录页面
       modal?.showToast({
         type: 'success',
-        title: '注册成功',
-        message: '正在跳转到登录页面...',
+        title: t('modal.success'),
+        message: t('register.successMessage'),
         duration: 2000
       })
       
@@ -152,11 +154,11 @@ const handleRegister = async () => {
         router.replace('/login')
       }, 1000)
     } else {
-      showError(response.message || '注册失败，请稍后重试')
+      showError(response.message || t('register.validation.registerFailed'))
     }
   } catch (error) {
     console.error('注册错误:', error)
-    showError('网络错误，请稍后重试')
+    showError(t('register.validation.networkError'))
   } finally {
     isLoading.value = false
   }

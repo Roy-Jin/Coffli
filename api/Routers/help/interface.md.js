@@ -34,7 +34,7 @@ All interfaces return a unified JSON response format:
 
 ## User Management Interface
 
-### 1.User Registration
+### 1. User Registration
 
 - **Method**: POST
 - **Path**: \`/user/register\`
@@ -125,7 +125,7 @@ curl -X POST %BASEURL%/user/login \\
 }
 \`\`\`
 
-### 3. User logout
+### 3. User Logout
 
 - **Method**: POST
 - **Path**: \`/user/logout\`
@@ -146,7 +146,7 @@ curl -X POST %BASEURL%/user/logout \\
   -H "Authorization: am9obl9kb2UtMTcwMTYwMDAwMDAwMA=="
 \`\`\`
 
-### 4. Get user information
+### 4. Get User Information
 
 - **Method**: GET
 - **Path**: \`/user/get\`
@@ -192,10 +192,10 @@ curl "%BASEURL%/user/get?id=roy-jin"
 - **Query parameters**:
   - \`id\`: User ID (Required)
 - **Response**:
-- 200: Returns avatar data (in base64 format)
-- 400: Missing user ID
-- 404: User or avatar not found
-- 500: Retrieval failed
+  - 200: Returns avatar data (in base64 format)
+  - 400: Missing user ID
+  - 404: User or avatar not found
+  - 500: Retrieval failed
 
 **Example Request**:
 \`\`\`bash
@@ -233,11 +233,64 @@ curl -X POST %BASEURL%/user/avatar \\
   }'
 \`\`\`
 
+### 6. Update User Information
+
+- **Method**: POST
+- **Path**: \`/user/update\`
+- **Description**: Update user information (nickname, gender, additional information)
+- **Headers**:
+  - \`X-User-Id\`: User ID
+  - \`Authorization\`: Access Token
+- **Body**:
+  \`\`\`json
+  {
+      "nickname": "string (Optional)",
+      "gender": "number (Optional, 1: Male, 2: Female, 3: Unknown)",
+      "info": {
+          "email": "string (Optional)",
+          "phone": "string (Optional)",
+          "birthday": "string (Optional, format: YYYY-MM-DD)",
+          "bio": "string (Optional)"
+      }
+  }
+  \`\`\`
+- **Response**:
+  - 200: Update successful
+  - 400: Missing valid fields or invalid parameter format
+  - 401: Unauthorized
+  - 500: Update failed
+
+**Example Request**:
+\`\`\`bash
+curl -X POST %BASEURL%/user/update \\
+  -H "X-User-Id: roy-jin" \\
+  -H "Authorization: am9obl9kb2UtMTcwMTYwMDAwMDAwMA==" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "nickname": "New Nickname",
+    "gender": 1,
+    "info": {
+        "email": "new.email@example.com",
+        "phone": "1234567890",
+        "birthday": "1990-01-01",
+        "bio": "This is my new bio."
+    }
+  }'
+\`\`\`
+
+**Example response**:
+\`\`\`json
+{
+    "code": 200,
+    "message": "User information updated successfully"
+}
+\`\`\`
+
 ---
 
 ## Blog Management Interface
 
-### 6. Get blog posts
+### 7. Get Blog Posts
 
 - **Method**: GET
 - **Path**: \`/blog/get\`
@@ -269,7 +322,7 @@ curl "%BASEURL%/blog/get?id=123"
 }
 \`\`\`
 
-### 7. Create a blog post
+### 8. Create a Blog Post
 
 - **Method**: POST
 - **Path**: \`/blog/create\`
@@ -309,7 +362,7 @@ curl -X POST %BASEURL%/blog/create \\
 }
 \`\`\`
 
-### 8. Delete blog post
+### 9. Delete Blog Post
 
 - **Method**: POST
 - **Path**: \`/blog/delete\`
@@ -352,7 +405,7 @@ curl -X POST %BASEURL%/blog/delete \\
 
 ## System Management Interface
 
-### 9. Database Initialization
+### 10. Database Initialization
 
 - **Method**: GET
 - **Path**: \`/init\`
@@ -380,7 +433,7 @@ curl "%BASEURL%/init?force=true" \\
 }
 \`\`\`
 
-### 10. SQL Execution
+### 11. SQL Execution
 
 - **Method**: GET, POST
 - **Path**: \`/sql\`
@@ -438,7 +491,7 @@ curl -X POST %BASEURL%/sql \\
 }
 \`\`\`
 
-### 11. API Documentation
+### 12. API Documentation
 
 - **Method**: GET
 - **Path**: \`/help\`
@@ -450,7 +503,7 @@ curl -X POST %BASEURL%/sql \\
 curl "%BASEURL%/help"
 \`\`\`
 
-### 12. Root Path
+### 13. Root Path
 
 - **Method**: GET
 - **Path**: \`/\`

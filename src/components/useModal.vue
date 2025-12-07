@@ -34,8 +34,8 @@
         <!-- 确认框内容 -->
         <div v-if="modal.type === 'confirm'" class="modal-confirm">
           <div class="confirm-buttons">
-            <button class="btn-cancel" @click="handleCancel">{{ modal.cancelText || '取消' }}</button>
-            <button class="btn-confirm" @click="handleConfirm">{{ modal.confirmText || '确认' }}</button>
+        <button class="btn-cancel" @click="handleCancel">{{ modal.cancelText || t('modal.cancel') }}</button>
+        <button class="btn-confirm" @click="handleConfirm">{{ modal.confirmText || t('modal.confirm') }}</button>
           </div>
         </div>
         
@@ -56,8 +56,8 @@
           <input v-model="inputValue" :type="modal.inputType || 'text'" 
                  :placeholder="modal.placeholder" class="input-field" />
           <div class="input-buttons">
-            <button class="btn-cancel" @click="handleCancel">{{ modal.cancelText || '取消' }}</button>
-            <button class="btn-confirm" @click="handleInputConfirm">{{ modal.confirmText || '确认' }}</button>
+            <button class="btn-cancel" @click="handleCancel">{{ modal.cancelText || t('modal.cancel') }}</button>
+            <button class="btn-confirm" @click="handleInputConfirm">{{ modal.confirmText || t('modal.confirm') }}</button>
           </div>
         </div>
       </div>
@@ -67,6 +67,9 @@
 
 <script setup lang="ts">
 import { ref, reactive, nextTick } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 // 吐司弹窗状态 - 改回单个对象
 const toast = reactive({
@@ -76,7 +79,8 @@ const toast = reactive({
   message: '',
   duration: 3000,
   leaving: false,
-  timeoutId: null as number | null
+  timeoutId: null as number | null,
+  pendingToast: null as any // 等待显示的toast
 })
 
 // 模态框状态 - 添加动画状态
@@ -129,6 +133,12 @@ const showToast = (options: {
   message: string
   duration?: number
 }) => {
+  // 如果当前toast正在离开动画中，等待动画完成后再显示新toast
+  if (toast.leaving) {
+    toast.pendingToast = options
+    return
+  }
+  
   // 清除之前的定时器
   if (toast.timeoutId) {
     clearTimeout(toast.timeoutId)
@@ -141,7 +151,8 @@ const showToast = (options: {
     title: options.title,
     message: options.message,
     duration: options.duration || 3000,
-    leaving: false
+    leaving: false,
+    pendingToast: null
   })
   
   // 设置自动隐藏定时器
@@ -167,6 +178,13 @@ const hideToast = () => {
   setTimeout(() => {
     toast.show = false
     toast.leaving = false
+    
+    // 如果有等待显示的toast，在动画完成后显示
+    if (toast.pendingToast) {
+      setTimeout(() => {
+        showToast(toast.pendingToast)
+      }, 50)
+    }
   }, 300)
 }
 
