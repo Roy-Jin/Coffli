@@ -1,0 +1,88 @@
+{
+  "header": {
+    "appName": "Coffli",
+    "unloggedUser": "Unlogged User",
+    "loginPrompt": "Click to login",
+    "login": "Login",
+    "welcome": "Welcome back",
+    "logout": "Logout"
+  },
+  "home": {
+    "latestBlogs": "Latest Blogs",
+    "blogSubtitle": "Sharing Knowledge and Thoughts",
+    "readMore": "Read More",
+    "loadMore": "Load More",
+    "author": "Author"
+  },
+  "blog": {
+    "vue3BestPractices": "Vue 3 Composition API Best Practices",
+    "vue3Excerpt": "Explore the core concepts and usage techniques of Vue 3 Composition API to help you write cleaner, more maintainable code...",
+    "frontendTools": "Modern Frontend Development Toolchain Guide",
+    "frontendExcerpt": "Comprehensive introduction to essential toolchain configurations for modern frontend development, from build tools to code quality checks...",
+    "typescriptDeepDive": "TypeScript Type System Deep Dive",
+    "typescriptExcerpt": "Deep understanding of TypeScript's type system, mastering advanced type techniques and best practices...",
+    "responsiveDesign": "Responsive Design Principles and Practices",
+    "responsiveExcerpt": "Learn the core principles of responsive design and master methods to provide the best user experience across different devices...",
+    "nodejsOptimization": "Node.js Performance Optimization Tips",
+    "nodejsExcerpt": "Share practical tips and tools for Node.js application performance optimization to improve application response speed...",
+    "gitWorkflow": "Git Workflow Best Practices",
+    "gitExcerpt": "Introduce efficient Git workflow patterns to help teams collaborate better and manage code versions..."
+  },
+  "login": {
+    "title": "Login",
+    "subtitle": "Please login to your account",
+    "username": "User ID",
+    "usernamePlaceholder": "Please enter user ID",
+    "password": "Password",
+    "passwordPlaceholder": "Please enter password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "loginButton": "Login",
+    "noAccount": "Don't have an account?",
+    "registerLink": "Register now"
+  },
+  "register": {
+    "title": "Register",
+    "subtitle": "Create your account",
+    "userId": "User ID",
+    "userIdPlaceholder": "Please enter user ID",
+    "password": "Password",
+    "passwordPlaceholder": "Please enter password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Please enter password again",
+    "registerButton": "Register",
+    "haveAccount": "Already have an account?",
+    "loginLink": "Login now"
+  },
+  "language": {
+    "zh": "中文",
+    "en": "English",
+    "switchLanguage": "Switch Language"
+  },
+  "profile": {
+    "basicInfo": "Basic Information",
+    "role": "Role",
+    "gender": "Gender",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "registrationTime": "Registration Time",
+    "lastLogin": "Last Login",
+    "additionalInfo": "Additional Information",
+    "email": "Email",
+    "phone": "Phone",
+    "birthday": "Birthday",
+    "bio": "Bio",
+    "back": "Back",
+    "logout": "Logout",
+    "unknown": "Unknown",
+    "male": "Male",
+    "female": "Female"
+  },
+  "confirmation": {
+    "logoutTitle": "Confirm Logout",
+    "logoutMessage": "Are you sure you want to logout?",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  }
+}

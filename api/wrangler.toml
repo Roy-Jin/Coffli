@@ -1,0 +1,17 @@
+name = "coffli-api"
+compatibility_date = "2025-11-29"
+main = "./index.js"
+
+
+[[d1_databases]]
+binding = "DB"
+database_name = "coffli-api-db"
+database_id = "c8f3ddfc-1452-4703-bd5d-cdab1254f844"
+
+[vars]
+DISABLE_ROUTERS = []
+SQL_DEBUG_TOKEN = "PASSWORD"
+
+[[routes]]
+pattern = "coffli.yiiy.dpdns.org"
+custom_domain = true
