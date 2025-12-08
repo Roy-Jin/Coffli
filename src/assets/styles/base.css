@@ -62,23 +62,20 @@ body {
         Arial,
         sans-serif;
     color: var(--text-primary);
+    background: var(--bg-primary);
     user-select: none;
     -webkit-user-drag: none;
     overflow-x: hidden;
 }
 
-body {
-    background:
-        var(--gradient-primary),
-        radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
-}
-
 #app {
+    display: flex;
+    flex-direction: column;
     min-height: 100dvh;
-    background: transparent;
     color: var(--text-primary);
     position: relative;
+    background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
 }
 
 .card {

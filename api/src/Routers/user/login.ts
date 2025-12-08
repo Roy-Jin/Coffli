@@ -20,7 +20,7 @@ async function handleRequest(
         }
 
         const findUserSql =
-            "SELECT user_id, password, last_login FROM USERS WHERE user_id = ? AND active = TRUE";
+            "SELECT * FROM USERS WHERE user_id = ? AND active = TRUE";
         const user = await DB.prepare(findUserSql).bind(id).first();
 
         if (!user?.user_id) {

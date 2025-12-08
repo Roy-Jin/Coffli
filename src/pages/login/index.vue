@@ -1,8 +1,5 @@
 <template>
   <div class="login-page">
-    <!-- 使用Header组件 -->
-    <Header />
-
     <!-- 登录内容区域 -->
     <div class="login-content">
       <div class="login-container">
@@ -13,7 +10,7 @@
             <p class="login-subtitle">{{ $t('login.subtitle') }}</p>
           </div>
 
-          <div class="login-form">
+          <form class="login-form" @submit.prevent="handleLogin">
             <!-- 用户ID输入 -->
             <div class="form-group">
               <label for="userId" class="form-label">
@@ -21,7 +18,7 @@
                 {{ $t('login.username') }}
               </label>
               <input id="userId" v-model="form.userId" type="text" class="form-input"
-                :placeholder="$t('login.usernamePlaceholder')" required />
+                :placeholder="$t('login.usernamePlaceholder')" autocomplete="username" />
             </div>
 
             <!-- 密码输入 -->
@@ -31,13 +28,13 @@
                 {{ $t('login.password') }}
               </label>
               <input id="password" v-model="form.password" type="password" class="form-input"
-                :placeholder="$t('login.passwordPlaceholder')" required />
+                :placeholder="$t('login.passwordPlaceholder')" autocomplete="current-password" />
             </div>
 
             <!-- 登录按钮 -->
-            <button type="button" class="login-btn" :disabled="isLoading" @click="handleLogin">
+            <button type="submit" class="login-btn" :disabled="isLoading">
               <i class="btn-icon fas fa-sign-in-alt"></i>
-              {{ isLoading ? '登录中...' : $t('login.loginButton') }}
+              {{ isLoading ? $t('login.loginLoading') : $t('login.loginButton') }}
             </button>
 
             <!-- 注册链接 -->
@@ -46,7 +43,7 @@
               <a @click="navigateToRegister" class="register-link" style="cursor: pointer;">{{ $t('login.registerLink')
               }}</a>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
@@ -57,13 +54,11 @@
 import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import Header from '@/components/useHeader.vue'
 import apiClient from '@/api/index'
 
 const router = useRouter()
 const { t } = useI18n()
 
-// 注入全局Modal方法
 const modal = inject('modal') as {
   showToast: (options: any) => void
   hideToast: () => void
@@ -71,28 +66,21 @@ const modal = inject('modal') as {
   hideModal: () => void
 }
 
-// 表单数据
 const form = ref({
   userId: '',
   password: ''
 })
 
-// 加载状态
 const isLoading = ref(false)
 
-// 显示错误消息
 const showError = (message: string, type: string = 'error') => {
   modal?.showToast({
     type,
-    title: type === 'error' ? t('modal.error') : type === 'warning' ? t('modal.warning') : t('modal.info'),
-    message,
-    duration: 5000
+    message
   })
 }
 
-// 登录处理函数
 const handleLogin = async () => {
-  // 表单验证
   if (!form.value.userId.trim()) {
     showError(t('login.validation.userIdRequired'), 'warning')
     return
@@ -112,26 +100,43 @@ const handleLogin = async () => {
     })
 
     if (response.code === 200) {
-      // 登录成功，显示成功消息并跳转到首页
       modal?.showToast({
         type: 'success',
-        title: t('modal.success'),
         message: t('login.successMessage')
       })
 
       router.replace('/')
     } else {
-      showError(response.message || t('login.validation.loginFailed'))
+      // 根据状态码显示对应的错误信息
+      let errorMessage = t('login.validation.loginFailed')
+      
+      switch (response.code) {
+        case 400:
+          errorMessage = t('login.validation.missingFields')
+          break
+        case 401:
+          errorMessage = t('login.validation.incorrectPassword')
+          break
+        case 404:
+          errorMessage = t('login.validation.userNotFound')
+          break
+        case 500:
+          errorMessage = t('login.validation.serverError')
+          break
+        default:
+          errorMessage = response.message || t('login.validation.loginFailed')
+      }
+      
+      showError(errorMessage)
     }
   } catch (error) {
-    console.error('登录错误:', error)
+    console.error(error)
     showError(t('login.validation.networkError'))
   } finally {
     isLoading.value = false
   }
 }
 
-// 导航到注册页面
 const navigateToRegister = () => {
   router.replace('/register')
 }
@@ -140,7 +145,7 @@ const navigateToRegister = () => {
 <style scoped>
 .login-page {
   display: flex;
-  flex-direction: column;
+  flex: 1;
 }
 
 .login-content {
@@ -151,8 +156,6 @@ const navigateToRegister = () => {
   padding: 2rem 1rem;
   position: relative;
   z-index: 1;
-  background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
 }
 
 .login-container {
@@ -251,7 +254,6 @@ const navigateToRegister = () => {
 @media (max-width: 768px) {
   .login-content {
     padding: 1.5rem 1rem;
-    min-height: calc(100vh - 70px);
   }
 
   .login-card {

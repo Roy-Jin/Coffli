@@ -27,37 +27,38 @@
           <i class="fas fa-times"></i>
         </button>
       </div>
-      
+
       <div class="modal-body">
         <div class="modal-message">{{ modal.message }}</div>
-        
+
         <!-- 确认框内容 -->
         <div v-if="modal.type === 'confirm'" class="modal-confirm">
           <div class="confirm-buttons">
-        <button class="btn-cancel" @click="handleCancel">{{ modal.cancelText || t('modal.cancel') }}</button>
-        <button class="btn-confirm" @click="handleConfirm">{{ modal.confirmText || t('modal.confirm') }}</button>
+            <button class="btn-cancel" @click="handleCancel">{{ modal.cancelText || t('modal.cancel') }}</button>
+            <button class="btn-confirm" @click="handleConfirm">{{ modal.confirmText || t('modal.confirm') }}</button>
           </div>
         </div>
-        
+
         <!-- 选择框内容 -->
         <div v-if="modal.type === 'select'" class="modal-select">
           <div class="select-options">
-            <div v-for="(option, index) in modal.options" :key="index" 
-                 :class="['select-option', { 'selected': modal.selected === option.value }]"
-                 @click="handleSelect(option.value)">
+            <div v-for="(option, index) in modal.options" :key="index"
+              :class="['select-option', { 'selected': modal.selected === option.value }]"
+              @click="handleSelect(option.value)">
               <i v-if="option.icon" :class="option.icon"></i>
               <span>{{ option.label }}</span>
             </div>
           </div>
         </div>
-        
+
         <!-- 输入框内容 -->
         <div v-if="modal.type === 'input'" class="modal-input">
-          <input v-model="inputValue" :type="modal.inputType || 'text'" 
-                 :placeholder="modal.placeholder" class="input-field" />
+          <input v-model="inputValue" :type="modal.inputType || 'text'" :placeholder="modal.placeholder"
+            class="input-field" />
           <div class="input-buttons">
             <button class="btn-cancel" @click="handleCancel">{{ modal.cancelText || t('modal.cancel') }}</button>
-            <button class="btn-confirm" @click="handleInputConfirm">{{ modal.confirmText || t('modal.confirm') }}</button>
+            <button class="btn-confirm" @click="handleInputConfirm">{{ modal.confirmText || t('modal.confirm')
+              }}</button>
           </div>
         </div>
       </div>
@@ -129,7 +130,7 @@ const getModalIcon = (type: string) => {
 // 显示吐司弹窗 - 单个吐司显示
 const showToast = (options: {
   type?: string
-  title: string
+  title?: string
   message: string
   duration?: number
 }) => {
@@ -138,23 +139,23 @@ const showToast = (options: {
     toast.pendingToast = options
     return
   }
-  
+
   // 清除之前的定时器
   if (toast.timeoutId) {
     clearTimeout(toast.timeoutId)
     toast.timeoutId = null
   }
-  
+
   Object.assign(toast, {
     show: true,
     type: options.type || 'info',
-    title: options.title,
+    title: options.title || t("modal." + options.type),
     message: options.message,
     duration: options.duration || 3000,
     leaving: false,
     pendingToast: null
   })
-  
+
   // 设置自动隐藏定时器
   if (toast.duration > 0) {
     toast.timeoutId = setTimeout(() => {
@@ -167,18 +168,18 @@ const showToast = (options: {
 const hideToast = () => {
   // 设置离开状态
   toast.leaving = true
-  
+
   // 清除定时器
   if (toast.timeoutId) {
     clearTimeout(toast.timeoutId)
     toast.timeoutId = null
   }
-  
+
   // 延迟隐藏以完成动画
   setTimeout(() => {
     toast.show = false
     toast.leaving = false
-    
+
     // 如果有等待显示的toast，在动画完成后显示
     if (toast.pendingToast) {
       setTimeout(() => {
@@ -224,7 +225,7 @@ const showModal = (options: {
 // 隐藏模态框 - 支持动画
 const hideModal = () => {
   modal.leaving = true
-  
+
   // 延迟隐藏以完成动画
   setTimeout(() => {
     modal.show = false
@@ -278,7 +279,8 @@ defineExpose({
 /* 吐司弹窗样式 */
 .toast-container {
   position: fixed;
-  top: 80px; /* 调整吐司位置向下 */
+  top: 80px;
+  /* 调整吐司位置向下 */
   right: 20px;
   z-index: 1000;
 }
@@ -465,7 +467,8 @@ defineExpose({
   justify-content: flex-end;
 }
 
-.btn-cancel, .btn-confirm {
+.btn-cancel,
+.btn-confirm {
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 0.5rem;
@@ -554,6 +557,7 @@ defineExpose({
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -565,6 +569,7 @@ defineExpose({
     transform: translateX(0);
     opacity: 1;
   }
+
   to {
     transform: translateX(100%);
     opacity: 0;
@@ -576,6 +581,7 @@ defineExpose({
     transform: scale(0.8);
     opacity: 0;
   }
+
   to {
     transform: scale(1);
     opacity: 1;
@@ -587,6 +593,7 @@ defineExpose({
     transform: scale(1);
     opacity: 1;
   }
+
   to {
     transform: scale(0.8);
     opacity: 0;
@@ -596,22 +603,24 @@ defineExpose({
 /* 响应式设计 */
 @media (max-width: 768px) {
   .toast-container {
-    top: 60px; /* 移动端也调整位置 */
+    top: 60px;
+    /* 移动端也调整位置 */
     right: 10px;
     left: 10px;
   }
-  
+
   .toast {
     min-width: auto;
     width: 100%;
   }
-  
+
   .modal {
     margin: 1rem;
     padding: 1.5rem;
   }
-  
-  .confirm-buttons, .input-buttons {
+
+  .confirm-buttons,
+  .input-buttons {
     flex-direction: column;
   }
 }

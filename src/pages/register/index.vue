@@ -1,9 +1,5 @@
 <template>
   <div class="register-page">
-    <!-- 使用Header组件 -->
-    <Header />
-
-    <!-- 注册内容区域 -->
     <div class="register-content">
       <div class="register-container">
         <!-- 注册卡片 -->
@@ -13,7 +9,7 @@
             <p class="register-subtitle">{{ $t('register.subtitle') }}</p>
           </div>
 
-          <div class="register-form">
+          <form class="register-form" @submit.prevent="handleRegister">
             <!-- 用户ID输入 -->
             <div class="form-group">
               <label for="userId" class="form-label">
@@ -21,7 +17,7 @@
                 {{ $t('register.userId') }}
               </label>
               <input id="userId" v-model="form.userId" type="text" class="form-input"
-                :placeholder="$t('register.userIdPlaceholder')" required />
+                :placeholder="$t('register.userIdPlaceholder')" autocomplete="username" />
             </div>
 
             <!-- 密码输入 -->
@@ -31,7 +27,7 @@
                 {{ $t('register.password') }}
               </label>
               <input id="password" v-model="form.password" type="password" class="form-input"
-                :placeholder="$t('register.passwordPlaceholder')" required />
+                :placeholder="$t('register.passwordPlaceholder')" autocomplete="new-password" />
             </div>
 
             <!-- 确认密码输入 -->
@@ -41,13 +37,13 @@
                 {{ $t('register.confirmPassword') }}
               </label>
               <input id="confirmPassword" v-model="form.confirmPassword" type="password" class="form-input"
-                :placeholder="$t('register.confirmPasswordPlaceholder')" required />
+                :placeholder="$t('register.confirmPasswordPlaceholder')" autocomplete="new-password" />
             </div>
 
             <!-- 注册按钮 -->
-            <button type="button" class="register-btn" :disabled="isLoading" @click="handleRegister">
+            <button type="submit" class="register-btn" :disabled="isLoading">
               <i class="btn-icon fas fa-user-plus"></i>
-              {{ isLoading ? '注册中...' : $t('register.registerButton') }}
+              {{ isLoading ? $t('register.registerLoading') : $t('register.registerButton') }}
             </button>
 
             <!-- 登录链接 -->
@@ -55,7 +51,7 @@
               <p class="login-text">{{ $t('register.haveAccount') }}</p>
               <a @click="navigateToLogin" class="login-link" style="cursor: pointer;">{{ $t('register.loginLink') }}</a>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
@@ -63,16 +59,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue'
+import { ref, inject} from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import Header from '@/components/useHeader.vue'
 import apiClient from '@/api/index'
 
 const router = useRouter()
 const { t } = useI18n()
 
-// 注入全局Modal方法
 const modal = inject('modal') as {
   showToast: (options: any) => void
   hideToast: () => void
@@ -80,29 +74,22 @@ const modal = inject('modal') as {
   hideModal: () => void
 }
 
-// 表单数据
 const form = ref({
   userId: '',
   password: '',
   confirmPassword: ''
 })
 
-// 加载状态
 const isLoading = ref(false)
 
-// 显示错误消息
 const showError = (message: string, type: string = 'error') => {
   modal?.showToast({
     type,
-    title: type === 'error' ? t('modal.error') : type === 'warning' ? t('modal.warning') : t('modal.info'),
-    message,
-    duration: 5000
+    message
   })
 }
 
-// 注册处理函数
 const handleRegister = async () => {
-  // 表单验证
   if (!form.value.userId.trim()) {
     showError(t('register.validation.userIdRequired'), 'warning')
     return
@@ -142,29 +129,42 @@ const handleRegister = async () => {
     })
 
     if (response.code === 200) {
-      // 注册成功，显示成功消息并跳转到登录页面
       modal?.showToast({
         type: 'success',
-        title: t('modal.success'),
         message: t('register.successMessage'),
-        duration: 2000
       })
-      
+
       setTimeout(() => {
         router.replace('/login')
       }, 1000)
     } else {
-      showError(response.message || t('register.validation.registerFailed'))
+      // 根据状态码显示对应的错误信息
+      let errorMessage = t('register.validation.registerFailed')
+      
+      switch (response.code) {
+        case 400:
+          errorMessage = t('register.validation.missingFields')
+          break
+        case 409:
+          errorMessage = t('register.validation.userExists')
+          break
+        case 500:
+          errorMessage = t('register.validation.serverError')
+          break
+        default:
+          errorMessage = response.message || t('register.validation.registerFailed')
+      }
+      
+      showError(errorMessage)
     }
   } catch (error) {
-    console.error('注册错误:', error)
+    console.error(error)
     showError(t('register.validation.networkError'))
   } finally {
     isLoading.value = false
   }
 }
 
-// 导航到登录页面
 const navigateToLogin = () => {
   router.replace('/login')
 }
@@ -173,7 +173,7 @@ const navigateToLogin = () => {
 <style scoped>
 .register-page {
   display: flex;
-  flex-direction: column;
+  flex: 1;
 }
 
 .register-content {
@@ -183,9 +183,6 @@ const navigateToLogin = () => {
   justify-content: safe center;
   padding: 2rem 1rem;
   position: relative;
-  z-index: 1;
-  background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
 }
 
 .register-container {

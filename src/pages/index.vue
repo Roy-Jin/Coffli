@@ -1,12 +1,9 @@
 <template>
   <div class="home-page">
-    <!-- Header组件 -->
-    <Header />
-
     <!-- 主要内容区域 -->
     <main class="main-content">
       <div class="container">
-        <!-- 博客列表标题 -->
+        <!-- 博客标题区域 -->
         <div class="blog-header">
           <h2 class="blog-title">{{ $t('home.latestBlogs') }}</h2>
           <p class="blog-subtitle">{{ $t('home.blogSubtitle') }}</p>
@@ -37,15 +34,13 @@
 </template>
 
 <script setup lang="ts">
-import Header from '@/components/useHeader.vue'
-
 // 示例博客数据（使用国际化键值）
 const blogList = [
   {
     id: 1,
-    titleKey: 'blog.vue3BestPractices',
+    titleKey: 'blog.vue3Composition',
     excerptKey: 'blog.vue3Excerpt',
-    author: '技术团队',
+    author: 'Vue团队',
     date: '2024-01-15'
   },
   {
@@ -143,6 +138,9 @@ const blogList = [
   cursor: pointer;
   box-shadow: var(--shadow-md);
   backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .blog-card:hover {
@@ -250,12 +248,6 @@ const blogList = [
 
   .blog-card {
     padding: 1rem;
-  }
-
-  .blog-card-footer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
   }
 
   .read-more-btn {

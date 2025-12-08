@@ -1,7 +1,5 @@
 <template>
   <div class="edit-profile-page">
-    <Header />
-
     <main class="main-content">
       <div class="container">
         <!-- 编辑表单卡片 -->
@@ -136,7 +134,6 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import apiClient from '@/api/index'
-import Header from '@/components/useHeader.vue'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -242,7 +239,6 @@ const handleSubmit = async () => {
     if (Object.keys(updateData).length === 0) {
       modal?.showToast({
         type: 'info',
-        title: t('modal.info'),
         message: t('editProfile.noChanges')
       })
       return
@@ -253,7 +249,6 @@ const handleSubmit = async () => {
     if (response.code === 200) {
       modal?.showToast({
         type: 'success',
-        title: t('modal.success'),
         message: t('editProfile.updateSuccess')
       })
 
@@ -271,18 +266,14 @@ const handleSubmit = async () => {
     } else {
       modal?.showToast({
         type: 'error',
-        title: t('modal.error'),
-        message: response.message || t('editProfile.updateFailed'),
-        duration: 5000
+        message: response.message || t('editProfile.updateFailed')
       })
     }
   } catch (error) {
-    console.error('更新用户信息错误:', error)
+    console.error(error)
     modal?.showToast({
       type: 'error',
-      title: t('modal.error'),
-      message: t('editProfile.networkError'),
-      duration: 5000
+      message: t('editProfile.networkError')
     })
   } finally {
     loading.value = false
@@ -299,7 +290,6 @@ onMounted(() => {
   if (!userStore.isLoggedIn) {
     modal?.showToast({
       type: 'error',
-      title: t('modal.error'),
       message: t('editProfile.loginRequired')
     })
     router.replace('/login')

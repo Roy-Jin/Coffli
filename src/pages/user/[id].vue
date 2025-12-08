@@ -31,14 +31,6 @@
                   {{ userInfo.active ? $t('profile.active') : $t('profile.inactive') }}
                 </span>
               </div>
-              <div class="info-item">
-                <label class="info-label">{{ $t('profile.registrationTime') }}:</label>
-                <span class="info-value">{{ formatTime(userInfo.reg_time) }}</span>
-              </div>
-              <div class="info-item">
-                <label class="info-label">{{ $t('profile.lastLogin') }}:</label>
-                <span class="info-value">{{ formatTime(userInfo.last_login) }}</span>
-              </div>
             </div>
           </div>
 
@@ -64,18 +56,6 @@
               </div>
             </div>
           </div>
-
-          <!-- 操作按钮区域 -->
-          <div class="action-section">
-            <button class="edit-btn button" @click="handleEdit">
-              <i class="fas fa-edit"></i>
-              {{ $t('profile.edit') }}
-            </button>
-            <button class="logout-btn button" @click="handleLogout">
-              <i class="fas fa-sign-out-alt"></i>
-              {{ $t('profile.logout') }}
-            </button>
-          </div>
         </div>
       </div>
     </main>
@@ -84,27 +64,16 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, inject } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useUserStore } from '@/stores/user'
 import apiClient from '@/api/index'
 import defaultAvatar from '@/assets/icon.png'
 
-const router = useRouter()
+const route = useRoute()
 const { t } = useI18n()
-const userStore = useUserStore()
+
 const loading = ref(false)
-
-// 注入全局Modal方法
-const modal = inject('modal') as {
-  showToast: (options: any) => void
-  hideToast: () => void
-  showModal: (options: any) => void
-  hideModal: () => void
-}
-
-// 用户信息
-const userInfo = computed(() => userStore.user || {
+const userInfo = ref({
   user_id: '',
   nickname: '',
   last_login: 0,
@@ -115,6 +84,14 @@ const userInfo = computed(() => userStore.user || {
   avatar: false,
   info: '{"ip": "", "email": "", "phone": "", "birthday": "", "bio": ""}'
 })
+
+// 注入全局Modal方法
+const modal = inject('modal') as {
+  showToast: (options: any) => void
+  hideToast: () => void
+  showModal: (options: any) => void
+  hideModal: () => void
+}
 
 // 用户头像
 const userAvatar = computed(() => {
@@ -161,90 +138,36 @@ const getGenderText = (gender: number) => {
   return genderMap[gender as keyof typeof genderMap] || t('profile.unknown')
 }
 
-// 编辑用户信息
-const handleEdit = () => {
-  router.replace('/profile/edit')
-}
-
 // 获取用户信息
 const fetchUserInfo = async () => {
-  if (!userStore.isLoggedIn || !userStore.getUserId) return
+  const userId = route.params.id as string
+  if (!userId) return
 
   loading.value = true
   try {
-    const response = await apiClient.getUserInfo(userStore.getUserId)
+    const response = await apiClient.getUserInfo(userId)
     if (response.code === 200 && response.data) {
-      userStore.setUser(response.data)
-      modal?.showToast({
-        type: 'error',
-        message: t('profile.networkError'),
+      userInfo.value = response.data
+    } else {
+      modal?.showModal({
+        type: 'info',
+        message: response.message || t('profile.networkError'),
+        onCancel: () => useRouter().replace('/')
       })
     }
   } catch (error) {
     console.error(error)
-    modal?.showToast({
-      type: 'error',
+    modal?.showModal({
+      type: 'info',
       message: t('profile.networkError'),
+      onCancel: () => useRouter().replace('/')
     })
   } finally {
     loading.value = false
   }
 }
 
-// 退出登录
-const handleLogout = async () => {
-  // 显示确认对话框
-  modal?.showModal({
-    type: 'confirm',
-    title: t('confirmation.logoutTitle'),
-    message: t('confirmation.logoutMessage'),
-    confirmText: t('confirmation.confirm'),
-    cancelText: t('confirmation.cancel'),
-    onConfirm: async () => {
-      loading.value = true
-
-      try {
-        const response = await apiClient.logout()
-
-        if (response.code === 200) {
-          // 显示成功消息
-          modal?.showToast({
-            type: 'success',
-            message: t('profile.logoutSuccess')
-          })
-
-          // 跳转到登录页面
-          router.replace('/login')
-        } else {
-          modal?.showToast({
-            type: 'error',
-            message: response.message || t('profile.logoutFailed'),
-          })
-        }
-      } catch (error) {
-        console.error(error)
-        modal?.showToast({
-          type: 'error',
-          message: t('profile.networkError'),
-        })
-      } finally {
-        loading.value = false
-      }
-    },
-    onCancel: () => {
-      // 用户取消，不执行任何操作
-    }
-  })
-}
-
 onMounted(() => {
-  // 如果没有登录，跳转到登录页面
-  if (!userStore.isLoggedIn) {
-    router.replace('/login')
-    return
-  }
-
-  // 获取最新的用户信息
   fetchUserInfo()
 })
 </script>
@@ -370,41 +293,6 @@ onMounted(() => {
   font-weight: 600;
 }
 
-.action-section {
-  text-align: center;
-  padding-top: 2rem;
-  border-top: 1px solid var(--border-color);
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.back-btn {
-  padding: 1rem 2.5rem;
-  font-size: 1.1rem;
-}
-
-.edit-btn {
-  background: linear-gradient(135deg, var(--theme-color) 0%, var(--theme-hover) 100%);
-  padding: 1rem 2.5rem;
-  font-size: 1.1rem;
-}
-
-.edit-btn:hover {
-  box-shadow: 0 10px 25px var(--theme-hover);
-}
-
-.logout-btn {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  padding: 1rem 2.5rem;
-  font-size: 1.1rem;
-}
-
-.logout-btn:hover {
-  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
-}
-
 @media (max-width: 768px) {
   .main-content {
     padding: 1rem 0;
@@ -440,21 +328,6 @@ onMounted(() => {
 
   .username {
     font-size: 1.75rem;
-  }
-
-  .section-title {
-    font-size: 1.25rem;
-  }
-
-  .action-section {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .back-btn,
-  .edit-btn,
-  .logout-btn {
-    width: 100%;
   }
 }
 </style>

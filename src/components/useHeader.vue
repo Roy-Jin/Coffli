@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header" v-if="isVisible" ref="headerRef">
     <div class="header-container">
       <!-- Logo区域 -->
       <div class="logo-section" @click="navigateToHome">
@@ -39,18 +39,15 @@
               <img :src="userAvatar" alt="User Avatar" class="avatar" />
             </div>
             <div class="user-details">
-              <span class="username">{{ userName }}</span>
-              <span class="login-prompt">{{ $t('header.welcome') }}</span>
+              <span class="nickname">{{ nickname }}</span>
+              <span class="user-id">{{ userid }}</span>
             </div>
           </div>
 
           <!-- 未登录状态 -->
           <div v-else class="user-info">
-            <div class="user-avatar">
-              <img src="@/assets/icon.png" alt="User Avatar" class="avatar" />
-            </div>
             <div class="user-details">
-              <span class="username">{{ $t('header.unloggedUser') }}</span>
+              <span class="nickname">{{ $t('header.unloggedUser') }}</span>
               <span class="login-prompt">{{ $t('header.loginPrompt') }}</span>
             </div>
             <button class="login-btn" @click="navigateToLogin">{{ $t('header.login') }}</button>
@@ -75,24 +72,13 @@ const { t, availableLocales } = useI18n()
 const languageStore = useLanguageStore()
 const userStore = useUserStore()
 
-// 注入全局Modal方法
-const modal = inject('modal') as {
-  showToast: (options: any) => void
-  hideToast: () => void
-  showModal: (options: any) => void
-  hideModal: () => void
-}
-
-// 当前语言
 const currentLanguage = computed(() => languageStore.getCurrentLanguage)
 
-// 当前语言名称
 const currentLanguageName = computed(() => {
   const lang = availableLanguages.value.find(lang => lang.code === currentLanguage.value)
   return lang ? lang.name : availableLanguages.value[0]?.name || ''
 })
 
-// 获取所有可用语言
 const availableLanguages = computed(() => {
   return availableLocales.map(locale => ({
     code: locale,
@@ -100,45 +86,38 @@ const availableLanguages = computed(() => {
   }))
 })
 
-// 登录状态
 const isLoggedIn = computed(() => userStore.isLoggedIn)
 
-// 用户信息
-const userName = computed(() => userStore.user?.nickname || userStore.user?.user_id || t('header.unloggedUser'))
+const nickname = computed(() => userStore.user?.nickname || userStore.user?.user_id || t('header.unloggedUser'))
+
+const userid = computed(() => "@" + userStore.user?.user_id)
 
 const userAvatar = computed(() => userStore.user?.avatar ? `/api/avatar/${userStore.user.user_id}` : defaultAvatar)
 
-// 下拉框状态
 const isDropdownOpen = ref(false)
 
-// 切换下拉框
 const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value
 }
 
-// 选择语言
 const selectLanguage = (langCode: string) => {
   languageStore.setLanguage(langCode)
   setI18nLanguage(langCode)
   isDropdownOpen.value = false
 }
 
-// 导航到主页
 const navigateToHome = () => {
   router.replace('/')
 }
 
-// 导航到登录页面
 const navigateToLogin = () => {
-  router.replace('/login')
+  router.push('/login')
 }
 
-// 导航到用户信息页面
 const navigateToProfile = () => {
-  router.replace('/profile')
+  router.push('/profile')
 }
 
-// 点击外部关闭下拉框
 const closeDropdown = (event: Event) => {
   const target = event.target as HTMLElement
   if (!target.closest('.language-dropdown')) {
@@ -152,6 +131,23 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener('click', closeDropdown)
+})
+
+const headerRef = ref<HTMLElement>()
+
+const isVisible = ref(true)
+
+const show = () => {
+  isVisible.value = true
+}
+
+const hide = () => {
+  isVisible.value = false
+}
+
+defineExpose({
+  show,
+  hide,
 })
 </script>
 
@@ -196,7 +192,7 @@ onUnmounted(() => {
 .right-section {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: .5rem;
 }
 
 .language-switcher {
@@ -222,7 +218,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 2px;
 }
 
 .language-dropdown__trigger:hover {
@@ -232,7 +228,7 @@ onUnmounted(() => {
 
 .language-dropdown__selected {
   flex: 1;
-  text-align: left;
+  text-align: center;
 }
 
 .language-dropdown__icon {
@@ -300,15 +296,24 @@ onUnmounted(() => {
   align-items: flex-end;
 }
 
-.username {
+.nickname {
   font-size: 0.9rem;
   color: var(--text-primary);
   font-weight: 500;
+  overflow: hidden;
+  max-width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.login-prompt {
+.login-prompt,
+.user-id {
   font-size: 0.75rem;
   color: var(--text-secondary);
+  overflow: hidden;
+  max-width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .login-btn {
@@ -344,6 +349,10 @@ onUnmounted(() => {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
+  .logo {
+    display: none;
+  }
+
   .header-container {
     padding: 0 0.75rem;
   }
@@ -353,12 +362,12 @@ onUnmounted(() => {
   }
 
   .right-section {
-    gap: 1rem;
+    gap: 0;
   }
 
   .language-dropdown__trigger {
     padding: 0.4rem 0.6rem;
-    min-width: 100px;
+    min-width: 0;
     font-size: 0.8rem;
   }
 
