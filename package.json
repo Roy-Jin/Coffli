@@ -7,7 +7,9 @@
     "node": "^20.19.0 || >=22.12.0"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "npm-run-all2 --parallel dev:backend dev:frontend",
+    "dev:frontend": "vite",
+    "dev:backend": "cd api && npm run dev && cd..",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",

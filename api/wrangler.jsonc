@@ -1,0 +1,30 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "coffli-api",
+	"main": "src/index.ts",
+	"compatibility_date": "2025-12-05",
+	"observability": {
+		"enabled": true
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "coffli-api-db",
+			"database_id": "c8f3ddfc-1452-4703-bd5d-cdab1254f844"
+		}
+	],
+	"vars": {
+		"DISABLE_ROUTERS": [],
+		"SQL_DEBUG_TOKEN": "PASSWORD"
+	},
+	"routes": [
+		{
+			"pattern": "coffli.yiiy.dpdns.org",
+			"custom_domain": true
+		}
+	]
+}

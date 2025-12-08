@@ -1,7 +1,7 @@
 import { useUserStore } from "@/stores/user";
 
 // API基础URL
-const BASE_URL = "https://coffli.yiiy.dpdns.org";
+const BASE_URL = import.meta.env.DEV ? "http://localhost:8787" : "https://coffli.yiiy.dpdns.org";
 
 // 统一响应格式
 interface ApiResponse<T = any> {
