@@ -59,13 +59,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, inject } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useLanguageStore } from '@/stores/language'
 import { useUserStore } from '@/stores/user'
 import { setI18nLanguage } from '@/i18n'
-import defaultAvatar from '@/assets/icon.png'
 
 const router = useRouter()
 const { t, availableLocales } = useI18n()
@@ -92,7 +91,9 @@ const nickname = computed(() => userStore.user?.nickname || userStore.user?.user
 
 const userid = computed(() => "@" + userStore.user?.user_id)
 
-const userAvatar = computed(() => userStore.user?.avatar ? `/api/avatar/${userStore.user.user_id}` : defaultAvatar)
+const userAvatar = computed(() => {
+  return userStore.user?.avatar
+})
 
 const isDropdownOpen = ref(false)
 

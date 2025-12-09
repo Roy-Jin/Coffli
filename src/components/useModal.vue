@@ -482,10 +482,6 @@ defineExpose({
   color: var(--text-primary);
 }
 
-.btn-cancel:hover {
-  background: var(--border-color);
-}
-
 .btn-confirm {
   background: var(--theme-color);
   color: white;

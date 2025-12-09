@@ -31,6 +31,10 @@
                   {{ userInfo.active ? $t('profile.active') : $t('profile.inactive') }}
                 </span>
               </div>
+              <div class="info-item">
+                <label class="info-label">{{ $t('profile.lastLogin') }}:</label>
+                <span class="info-value">{{ formatTime(userInfo.last_login) }}</span>
+              </div>
             </div>
           </div>
 
@@ -67,7 +71,6 @@ import { ref, computed, onMounted, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import apiClient from '@/api/index'
-import defaultAvatar from '@/assets/icon.png'
 
 const route = useRoute()
 const { t } = useI18n()
@@ -81,7 +84,7 @@ const userInfo = ref({
   gender: 3,
   reg_time: 0,
   active: true,
-  avatar: false,
+  avatar: '',
   info: '{"ip": "", "email": "", "phone": "", "birthday": "", "bio": ""}'
 })
 
@@ -94,12 +97,7 @@ const modal = inject('modal') as {
 }
 
 // 用户头像
-const userAvatar = computed(() => {
-  if (userInfo.value.avatar && userInfo.value.user_id) {
-    return `/api/user/avatar?id=${userInfo.value.user_id}`
-  }
-  return defaultAvatar
-})
+const userAvatar = computed(() => userInfo.value.avatar)
 
 // 解析额外信息
 const extraInfo = computed(() => {

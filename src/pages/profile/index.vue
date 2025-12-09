@@ -32,10 +32,6 @@
                 </span>
               </div>
               <div class="info-item">
-                <label class="info-label">{{ $t('profile.registrationTime') }}:</label>
-                <span class="info-value">{{ formatTime(userInfo.reg_time) }}</span>
-              </div>
-              <div class="info-item">
                 <label class="info-label">{{ $t('profile.lastLogin') }}:</label>
                 <span class="info-value">{{ formatTime(userInfo.last_login) }}</span>
               </div>
@@ -88,7 +84,6 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import apiClient from '@/api/index'
-import defaultAvatar from '@/assets/icon.png'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -112,17 +107,12 @@ const userInfo = computed(() => userStore.user || {
   gender: 3,
   reg_time: 0,
   active: true,
-  avatar: false,
+  avatar: '',
   info: '{"ip": "", "email": "", "phone": "", "birthday": "", "bio": ""}'
 })
 
 // 用户头像
-const userAvatar = computed(() => {
-  if (userInfo.value.avatar && userInfo.value.user_id) {
-    return `/api/user/avatar?id=${userInfo.value.user_id}`
-  }
-  return defaultAvatar
-})
+const userAvatar = computed(() => { return userStore.user?.avatar })
 
 // 解析额外信息
 const extraInfo = computed(() => {
@@ -172,7 +162,7 @@ const fetchUserInfo = async () => {
 
   loading.value = true
   try {
-    const response = await apiClient.getUserInfo(userStore.getUserId)
+    const response = await apiClient.getUserInfo()
     if (response.code === 200 && response.data) {
       userStore.setUser(response.data)
     }
@@ -239,6 +229,16 @@ onMounted(() => {
     router.replace('/login')
     return
   }
+
+  apiClient.checkAuth().then((isAuthenticated) => {
+    if (!isAuthenticated) {
+      modal?.showToast({
+        type: 'error',
+        message: t('profile.sessionExpired')
+      });
+      router.replace('/login')
+    }
+  })
 
   // 获取最新的用户信息
   fetchUserInfo()

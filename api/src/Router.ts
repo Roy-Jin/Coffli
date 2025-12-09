@@ -4,7 +4,7 @@ import _init from "./Routers/init/index";
 import _root from "./Routers/root/index";
 import _sql from "./Routers/sql/index";
 import _help from "./Routers/help/index";
-import _user_avatar from "./Routers/user/avatar";
+import _user_auth from "./Routers/user/auth";
 import _user_register from "./Routers/user/register";
 import _user_get from "./Routers/user/get";
 import _user_login from "./Routers/user/login";
@@ -29,7 +29,7 @@ const RoutersList: RouterItem[] = [
     { path: "/sql", handler: _sql },
     { path: "/help", handler: _help },
     // user router
-    { path: "/user/avatar", handler: _user_avatar },
+    { path: "/user/auth", handler: _user_auth },
     { path: "/user/register", handler: _user_register },
     { path: "/user/logout", handler: _user_logout },
     { path: "/user/get", handler: _user_get },
@@ -51,10 +51,15 @@ async function Router_default(
     try {
         const disable = env?.DISABLE_ROUTERS || [];
         const router2 = RoutersList.find((item) => item.path === path);
-        if (router2 && !disable.includes(path)) {
+        if (router2) {
             const handler = router2.handler;
             const res = await handler.handleRequest(request, env, context);
             return Response_default(res[0], res[1]);
+        } else if (disable.includes(path)) {
+            return Response_default(
+                { message: "403 Forbidden", code: 403, path: path },
+                { status: 403 },
+            );
         } else {
             return Response_default(
                 { message: "404 Not Found", code: 404, path: path },

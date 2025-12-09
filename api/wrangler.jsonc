@@ -26,5 +26,8 @@
 			"pattern": "coffli.yiiy.dpdns.org",
 			"custom_domain": true
 		}
+	],
+	"compatibility_flags": [
+		"nodejs_compat"
 	]
 }

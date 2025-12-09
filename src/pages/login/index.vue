@@ -55,6 +55,7 @@ import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import apiClient from '@/api/index'
+import { useUserStore } from '@/stores/user'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -105,11 +106,15 @@ const handleLogin = async () => {
         message: t('login.successMessage')
       })
 
+      const response = await apiClient.getUserInfo()
+      if (response.code === 200 && response.data) {
+        useUserStore().setUser(response.data)
+      }
       router.replace('/')
     } else {
       // 根据状态码显示对应的错误信息
       let errorMessage = t('login.validation.loginFailed')
-      
+
       switch (response.code) {
         case 400:
           errorMessage = t('login.validation.missingFields')
@@ -126,7 +131,7 @@ const handleLogin = async () => {
         default:
           errorMessage = response.message || t('login.validation.loginFailed')
       }
-      
+
       showError(errorMessage)
     }
   } catch (error) {

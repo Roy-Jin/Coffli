@@ -65,9 +65,9 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/user/id/[id]': RouteRecordInfo<
-      '/user/id/[id]',
-      '/user/id/:id',
+    '/user/[id]': RouteRecordInfo<
+      '/user/[id]',
+      '/user/:id',
       { id: ParamValue<true> },
       { id: ParamValue<false> },
       | never
@@ -121,9 +121,9 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'src/pages/user/id/[id].vue': {
+    'src/pages/user/[id].vue': {
       routes:
-        | '/user/id/[id]'
+        | '/user/[id]'
       views:
         | never
     }

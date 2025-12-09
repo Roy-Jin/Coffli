@@ -117,7 +117,7 @@ curl -X POST %BASEURL%/user/login \\
             "gender": 3,
             "reg_time": 1767225600000,
             "active": true,
-            "avatar": false,
+            "avatar": "",
             "info": "{\\"ip\\": \\"\\", \\"email\\": \\"\\", \\"phone\\": \\"\\", \\"birthday\\": \\"\\", \\"bio\\": \\"\\"}"
         },
         "token": "am9obl9kb2UtMTcwMTYwMDAwMDAwMA=="
@@ -176,62 +176,39 @@ curl "%BASEURL%/user/get?id=roy-jin"
         "gender": 3,
         "reg_time": 1767225600000,
         "active": true,
-        "avatar": false,
+        "avatar": "",
         "info": "{\\"ip\\": \\"\\", \\"email\\": \\"\\", \\"phone\\": \\"\\", \\"birthday\\": \\"\\", \\"bio\\": \\"\\"}"
     }
 }
 \`\`\`
 
-### 5. User Avatar Management
-
-#### 5.1 Get Avatar
-
+### 5. Check User Authentication
 - **Method**: GET
-- **Path**: \`/user/avatar\`
-- **Description**: Get user avatar
-- **Query parameters**:
-  - \`id\`: User ID (Required)
-- **Response**:
-  - 200: Returns avatar data (in base64 format)
-  - 400: Missing user ID
-  - 404: User or avatar not found
-  - 500: Retrieval failed
-
-**Example Request**:
-\`\`\`bash
-curl "%BASEURL%/user/avatar?id=roy-jin"
-\`\`\`
-
-#### 5.2 Upload Profile Picture
-
-- **Method**: POST
-- **Path**: \`/user/avatar\`
-- **Description**: Upload user avatar
+- **Path**: \`/user/auth\`
+- **Description**: Check if the user is authenticated
 - **Headers**:
   - \`X-User-Id\`: User ID
   - \`Authorization\`: Access Token
-- **Body**:
-  \`\`\`json
-  {
-      "avatar": "string (Base64 image data)"
-  }
-  \`\`\`
+- **Body**: None
 - **Response**:
-  - 200: Upload successful
-  - 400: Avatar data format error
+  - 200: Authentication successful
+  - 400: Missing required fields
   - 401: Unauthorized
-  - 500: Upload failed
+  - 500: Authentication failed
 
 **Example Request**:
 \`\`\`bash
-curl -X POST %BASEURL%/user/avatar \\
+curl -X GET %BASEURL%/user/auth \\
   -H "X-User-Id: roy-jin" \\
-  -H "Authorization: am9obl9kb2UtMTcwMTYwMDAwMDAwMA==" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "avatar": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
-  }'
+  -H "Authorization: am9obl9kb2UtMTcwMTYwMDAwMDAwMA=="
 \`\`\`
+
+**Example response**:
+\`\`\`json
+{
+    "code": 200,
+    "message": "Authentication"
+}
 
 ### 6. Update User Information
 
@@ -246,6 +223,7 @@ curl -X POST %BASEURL%/user/avatar \\
   {
       "nickname": "string (Optional)",
       "gender": "number (Optional, 1: Male, 2: Female, 3: Unknown)",
+      "avatar": "string (Optional, Base64 encoded string of user avatar)",
       "info": {
           "email": "string (Optional)",
           "phone": "string (Optional)",
@@ -484,7 +462,7 @@ curl -X POST %BASEURL%/sql \\
             "gender": 3,
             "reg_time": 1767225600000,
             "active": true,
-            "avatar": false,
+            "avatar": "",
             "info": "{\\"ip\\": \\"\\", \\"email\\": \\"\\", \\"phone\\": \\"\\", \\"birthday\\": \\"\\", \\"bio\\": \\"\\"}"
         }
     ]

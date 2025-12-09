@@ -1,7 +1,10 @@
 import { useUserStore } from "@/stores/user";
+import defaultAvatar from "@/assets/defaultAvatar.svg";
 
 // API基础URL
-const BASE_URL = import.meta.env.DEV ? "http://localhost:8787" : "https://coffli.yiiy.dpdns.org";
+const BASE_URL = import.meta.env.DEV
+  ? "http://localhost:8787"
+  : "https://coffli.yiiy.dpdns.org";
 
 // 统一响应格式
 interface ApiResponse<T = any> {
@@ -20,7 +23,7 @@ interface User {
   gender: number;
   reg_time: number;
   active: boolean;
-  avatar: boolean;
+  avatar: string;
   info: string;
 }
 
@@ -161,27 +164,33 @@ class APIClient {
   }
 
   // 获取用户信息
-  async getUserInfo(userId: string): Promise<ApiResponse<User>> {
-    return this.get<User>("/user/get", { id: userId });
-  }
-
-  // 获取用户头像
-  async getUserAvatar(userId: string): Promise<ApiResponse<string>> {
-    return this.get<string>("/user/avatar", { id: userId });
-  }
-
-  // 上传用户头像
-  async uploadAvatar(avatarData: string): Promise<ApiResponse> {
-    return this.post("/user/avatar", { avatar: avatarData });
+  async getUserInfo(userId?: string): Promise<ApiResponse<User>> {
+    const response = await this.get<User>("/user/get", {
+      id: userId || this.userStore.getUserId || "",
+    });
+    if (response.code === 200 && !response.data?.avatar) {
+      response.data!.avatar = defaultAvatar;
+    } else if (response.code === 401 && this.userStore.isLoggedIn) {
+    }
+    return response;
   }
 
   // 更新用户信息
   async updateUserInfo(userData: {
     nickname?: string;
     gender?: number;
+    avatar?: string;
     info?: any;
   }): Promise<ApiResponse> {
     return this.post("/user/update", userData);
+  }
+
+  async checkAuth(): Promise<boolean> {
+    const response = await this.get<User>("/user/auth");
+    if (response.code === 401) {
+      return false;
+    }
+    return true;
   }
 
   // ========== 博客管理接口 ==========

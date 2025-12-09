@@ -33,6 +33,7 @@ async function handleRequest(
 
         const sql = `
             CREATE TABLE IF NOT EXISTS USERS (
+                avatar TEXT,
                 nickname TEXT,
                 last_login INTEGER,
                 password TEXT NOT NULL,
@@ -40,16 +41,8 @@ async function handleRequest(
                 gender INTEGER DEFAULT 3,
                 reg_time INTEGER NOT NULL,
                 active BOOLEAN DEFAULT TRUE,
-                avatar BOOLEAN DEFAULT FALSE,
                 user_id TEXT COLLATE NOCASE UNIQUE PRIMARY KEY,
                 info TEXT DEFAULT '{"ip": "", "email": "", "phone": "", "birthday": "", "bio": ""}'
-            );
-
-            CREATE TABLE IF NOT EXISTS USERS_AVATAR (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                avatar TEXT NOT NULL,
-                user_id TEXT NOT NULL,
-                upd_time INTEGER NOT NULL
             );
 
             CREATE TABLE IF NOT EXISTS USER_TOKENS (

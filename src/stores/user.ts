@@ -8,7 +8,7 @@ interface UserInfo {
   gender: number
   reg_time: number
   active: boolean
-  avatar: boolean
+  avatar: string
   info: string
 }
 

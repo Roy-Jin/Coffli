@@ -25,7 +25,7 @@ async function handleRequest(
             ];
         }
 
-        const { nickname, gender, info } = await request.json();
+        const { nickname, gender, info, avatar } = await request.json();
         const updateFields: string[] = [];
         const bindParams: any[] = [];
 
@@ -42,6 +42,11 @@ async function handleRequest(
         if (info !== undefined) {
             updateFields.push("info = ?");
             bindParams.push(JSON.stringify(info));
+        }
+
+        if (avatar !== undefined) {
+            updateFields.push("avatar = ?");
+            bindParams.push(avatar);
         }
 
         if (updateFields.length === 0) {
