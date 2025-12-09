@@ -65,7 +65,6 @@ body {
     background: var(--bg-primary);
     user-select: none;
     -webkit-user-drag: none;
-    overflow-x: hidden;
 }
 
 #app {

@@ -175,10 +175,6 @@ const fetchUserInfo = async () => {
     const response = await apiClient.getUserInfo(userStore.getUserId)
     if (response.code === 200 && response.data) {
       userStore.setUser(response.data)
-      modal?.showToast({
-        type: 'error',
-        message: t('profile.networkError'),
-      })
     }
   } catch (error) {
     console.error(error)
