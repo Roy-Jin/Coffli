@@ -154,6 +154,7 @@ const navigateToRegister = () => {
   align-items: center;
   justify-content: safe center;
   padding: 2rem 1rem;
+  width: 100dvw;
 }
 
 .login-container {

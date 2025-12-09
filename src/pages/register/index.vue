@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject} from 'vue'
+import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import apiClient from '@/api/index'
@@ -140,7 +140,7 @@ const handleRegister = async () => {
     } else {
       // 根据状态码显示对应的错误信息
       let errorMessage = t('register.validation.registerFailed')
-      
+
       switch (response.code) {
         case 400:
           errorMessage = t('register.validation.missingFields')
@@ -154,7 +154,7 @@ const handleRegister = async () => {
         default:
           errorMessage = response.message || t('register.validation.registerFailed')
       }
-      
+
       showError(errorMessage)
     }
   } catch (error) {
@@ -182,6 +182,7 @@ const navigateToLogin = () => {
   align-items: center;
   justify-content: safe center;
   padding: 2rem 1rem;
+  width: 100dvw;
 }
 
 .register-container {
