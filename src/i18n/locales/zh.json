@@ -40,7 +40,7 @@
     "loginLoading": "登录中...",
     "noAccount": "还没有账户？",
     "registerLink": "立即注册",
-    "successMessage": "登录成功！",
+    "successMessage": "登录成功，正在跳转至首页",
     "validation": {
       "userIdRequired": "请输入用户ID",
       "passwordRequired": "请输入密码",

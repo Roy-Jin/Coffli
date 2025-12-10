@@ -368,12 +368,16 @@ defineExpose({
 
   .language-dropdown__trigger {
     padding: 0.4rem 0.6rem;
-    min-width: 0;
+    min-width: 60px;
     font-size: 0.8rem;
   }
 
+  .language-dropdown__selected {
+    display: none;
+  }
+
   .language-dropdown__item {
-    padding: 0.6rem 0.8rem;
+    padding: 0.3rem 0.4rem;
     font-size: 0.8rem;
   }
 
@@ -416,12 +420,10 @@ defineExpose({
 
   .language-dropdown__trigger {
     padding: 0.35rem 0.5rem;
-    min-width: 90px;
     font-size: 0.75rem;
   }
 
   .language-dropdown__item {
-    padding: 0.5rem 0.6rem;
     font-size: 0.75rem;
   }
 

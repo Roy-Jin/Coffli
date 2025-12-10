@@ -26,7 +26,7 @@
     "loginLoading": "Logging in...",
     "noAccount": "Don't have an account?",
     "registerLink": "Register now",
-    "successMessage": "Login successful!",
+    "successMessage": "Login successful, redirecting...",
     "validation": {
       "userIdRequired": "Please enter user ID",
       "passwordRequired": "Please enter password",
